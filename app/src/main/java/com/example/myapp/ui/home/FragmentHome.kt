@@ -13,19 +13,19 @@ import com.example.myapp.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentHome : Fragment(){
+class FragmentHome : Fragment() {
     var _binding: FragmentHomeBinding? = null
     val binding: FragmentHomeBinding get() = _binding!!
 
     private val adapterHome = AdapterHome()
-    private val viewModel :HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding =FragmentHomeBinding.inflate(inflater,container,false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,18 +33,27 @@ class FragmentHome : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         onClick()
         setRecyclerView()
+        getTasks()
+    }
+
+    private fun getTasks() {
+        viewModel.getTasks().observe(viewLifecycleOwner) {
+            it?.let {
+                adapterHome.tasks = it as ArrayList<Task>
+            }
+        }
     }
 
     private fun setRecyclerView() {
         binding.rvFragmentHomeListTasks.apply {
             adapter = adapterHome
-            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         }
     }
 
     private fun onClick() {
         binding.fabFragmentHomeAddList.setOnClickListener {
-           val task = Task("arshya",2020)
+            val task = Task("arshya", 2020)
             viewModel.InsertTask(task)
         }
     }
