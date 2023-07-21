@@ -32,8 +32,16 @@ class FragmentHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onClick()
-        setRecyclerView()
+        setRecyclerViewTask()
+        setRecyclerViewContacts()
         getTasks()
+    }
+
+    private fun setRecyclerViewContacts() {
+        binding.rvFragmentHomeListContetnt.apply {
+            adapter = adapterHome
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        }
     }
 
     private fun getTasks() {
@@ -44,7 +52,7 @@ class FragmentHome : Fragment() {
         }
     }
 
-    private fun setRecyclerView() {
+    private fun setRecyclerViewTask() {
         binding.rvFragmentHomeListTasks.apply {
             adapter = adapterHome
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
